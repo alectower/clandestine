@@ -99,7 +99,10 @@ module Clandestine
         value = data[@arg] if data
         if value
           IO.popen('pbcopy', 'w') {|clipboard| clipboard.print "#{value}"}
-          sleep(10)
+          10.downto(1) do |num|
+            sleep(1)
+            num == 1 ? say("#{num}") : say("#{num} ")
+          end
           IO.popen('pbcopy', 'w') {|clipboard| clipboard.print ""}
         else
           puts "No value found for #{@arg}"
