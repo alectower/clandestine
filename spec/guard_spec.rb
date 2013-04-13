@@ -54,7 +54,7 @@ describe Clandestine::Guard do
     @guard.stub(:ask).and_return "safepassword"
     @guard.stub(:retrieve_data).with("safepassword").and_return Hash["gmail" => "gmailpassword"]
     IO.should_receive(:popen).with('pbcopy', 'w')
-    @guard.should_receive(:sleep).with(5)
+    @guard.should_receive(:sleep).with(1).exactly(10).times
     IO.should_receive(:popen).with('pbcopy', 'w')
     @guard.command = "-g"
     @guard.arg = "gmail"
