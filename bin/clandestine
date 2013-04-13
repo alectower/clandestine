@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+
+$: << File.expand_path(File.dirname(__FILE__) + "/../lib") unless $:.include? File.expand_path(File.dirname(__FILE__) + "/../lib")
+
+require 'password_safe'
+
+PasswordSafe::Guard.new.on_the_job
