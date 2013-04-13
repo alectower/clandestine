@@ -99,6 +99,7 @@ module Clandestine
         value = data[@arg] if data
         if value
           IO.popen('pbcopy', 'w') {|clipboard| clipboard.print "#{value}"}
+          say("Password on clipboard countdown: ")
           10.downto(1) do |num|
             sleep(1)
             num == 1 ? say("#{num}") : say("#{num} ")
