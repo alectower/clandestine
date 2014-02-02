@@ -12,7 +12,6 @@ module Clandestine
     def self.run
       clo = CommandLineOptions.new
       options = clo.parse
-      setup
 
       command = options.keys.first
       value = options[command]

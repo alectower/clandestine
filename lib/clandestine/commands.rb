@@ -1,6 +1,7 @@
 require_relative 'version'
 require_relative 'clandestine_error'
 require_relative 'io'
+require_relative 'safe_location'
 require_relative 'commands/add'
 require_relative 'commands/update'
 require_relative 'commands/get'
@@ -32,7 +33,7 @@ module Clandestine
       end
 
       def self.location
-        ENV['CLANDESTINE_SAFE'] || "#{ENV['HOME']}/.cls"
+        ENV['CLANDESTINE_SAFE'] || SAFE_LOCATION
       end
 
       def self.remove(password = nil)

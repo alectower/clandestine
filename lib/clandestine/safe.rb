@@ -1,5 +1,6 @@
 require 'pstore'
 require_relative 'crypt'
+require_relative 'safe_location'
 require_relative 'safe_authentication'
 
 module Clandestine
@@ -10,11 +11,11 @@ module Clandestine
 
     def initialize(password)
       @password = password
-      @location = ENV['CLANDESTINE_SAFE']
-      @safe = ::PStore.new(location)
+      @location = ENV['CLANDESTINE_SAFE'] || SAFE_LOCATION
+      @safe = PStore.new(location)
       if first_access(location)
         open do |s|
-          safe[:safe_password] = Crypt.hash_password(password)
+          safe[:safe_password] = Crypt.hash_password(IO.get_password(true))
         end
       end
     end
@@ -61,6 +62,7 @@ module Clandestine
     end
 
     def remove
+      SafeAuthentication.authenticate(safe, password)
       File.delete location
       true
     end

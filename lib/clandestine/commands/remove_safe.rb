@@ -10,7 +10,9 @@ module Clandestine
     end
 
     def remove
-      Safe.new(safe_password).remove
+      Safe.new(safe_password).open do |safe|
+        safe.remove
+      end
     end
   end
 end

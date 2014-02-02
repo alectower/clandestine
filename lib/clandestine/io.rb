@@ -19,8 +19,8 @@ module Clandestine
       contents.sort.each { |key| puts key.to_s }
     end
 
-    def self.get_password(new_password = false)
-      message = if new_password
+    def self.get_password(safe_password = false)
+      message = if safe_password
         "Enter the new safe password"
       else
         "Enter the safe password"
