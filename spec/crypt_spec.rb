@@ -1,11 +1,26 @@
 require 'spec_helper'
+require 'clandestine/crypt'
 
 describe Clandestine::Crypt do
-  include Clandestine::Crypt
-  it "should encrypt data" do
-    encrypt("this is a test",'password').should_not eql "this is a test"
+
+  describe '#encrypt' do
+    it 'encrypts data with password' do
+      encrypted = Clandestine::Crypt.encrypt("myaccountpassword", "safe_password")
+      encrypted.should_not eql "myaccountpassword"
+      encrypted.should_not eql nil
+    end
   end
-  it "should decrypt data" do
-    decrypt(encrypt("this is a test",'password'), 'password').should eql "this is a test"
+
+  describe '#decrypt' do
+    it 'decrypts data with password' do
+      decrypted = Clandestine::Crypt.decrypt("OePyNbyDMUbza5zUVor4wWS8Tb5u26FmxGXpC9XENWeMNJYJj1WKJlDOZYxG\nXpSqHSSNaT4dhUsX+T7abgZ1qg==\n", "safe_password")
+      decrypted.should eql "myaccountpassword"
+    end
+
+    it 'does not decrypt with wrong password' do
+      expect {
+        Clandestine::Crypt.decrypt("OePyNbyDMUbza5zUVor4wWS8Tb5u26FmxGXpC9XENWeMNJYJj1WKJlDOZYxG\nXpSqHSSNaT4dhUsX+T7abgZ1qg==\n", "wrong_password")
+      }.to raise_error Clandestine::ClandestineError
+    end
   end
 end

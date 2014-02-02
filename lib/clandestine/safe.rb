@@ -1,54 +1,79 @@
+require 'pstore'
+require_relative 'crypt'
+require_relative 'safe_authentication'
+
 module Clandestine
-  # The Safe class interacts with a file (safe),
-  # storing, retrieving, or removing data from it.
   class Safe
-    include Clandestine::Crypt
-    include Clandestine::Config
-    
-    # Default initialization of safe 
-    # in PASSWORD_SAFE location
-    def initialize(safe_location = Clandestine::Config::CONFIG_PATH)
-      @safe_location = safe_location
-      File.new @safe_location, 'w' unless File.exists?(@safe_location) || File.symlink?(@safe_location)
-      if File.symlink?(@safe_location) && !File.exists?(File.readlink @safe_location)
-        FileUtils.rm_f File.readlink @safe_location
+
+    attr_reader :safe, :password, :location
+    private :safe, :password, :location
+
+    def initialize(password)
+      @password = password
+      @location = ENV['CLANDESTINE_SAFE']
+      @safe = ::PStore.new(location)
+      if first_access(location)
+        open do |s|
+          safe[:safe_password] = Crypt.hash_password(password)
+        end
       end
     end
-  
-    # Empties safe by writing nil to file
-    def empty_safe
-      if File.exists? @safe_location
-        File.open(@safe_location, 'w') { |f| f << nil }
+
+    def open
+      safe.transaction do
+        yield self
       end
     end
-    
-    # Checks for contents in safe
-    def empty?
-      if File.symlink? @safe_location 
-        IO.readlines(File.readlink @safe_location).empty? if File.exists? File.readlink @safe_location
-      else
-        IO.readlines(@safe_location).empty?
-      end
+
+    def contents
+      contents = safe.roots
+      contents.delete(:safe_password)
+      contents
     end
-  
-    # Removes safe from file system
-    def self_destruct
-      FileUtils.rm_f File.readlink @safe_location if File.symlink? @safe_location
-      FileUtils.rm_f @safe_location
+
+    def [](key)
+      return if !exists?(key)
+      SafeAuthentication.authenticate(safe, password)
+      value = safe[key]
+      Crypt.decrypt(value, password)
     end
-  
-    # Unlocks the safe by decrypting the data
-    # currently in the safe with the specified password
-    # If the password is incorrect an OpenSSL::Cipher::CipherError
-    # exception is thrown
-    def unlock(password)
-       decrypt(IO.readlines(@safe_location).join, password) unless File.zero? @safe_location
+
+    alias :get :[]
+
+    def []=(key, value)
+      SafeAuthentication.authenticate(safe, password)
+      safe[key] = Crypt.encrypt value, password
+      true
     end
-  
-    # Locks the safe by encrypting the data with the
-    # specified password
-    def lock(data, password)
-      File.open(@safe_location, 'w') { |f| f << encrypt(data, password) }
+
+    alias :add :[]=
+
+    def delete(key)
+      SafeAuthentication.authenticate(safe, password)
+      safe.delete(key)
+      true
+    end
+
+    def update_safe_password(new_password)
+      SafeAuthentication.authenticate(safe, password)
+      safe[:safe_password] = Crypt.hash_password(new_password)
+      true
+    end
+
+    def remove
+      File.delete location
+      true
+    end
+
+    def exists?(key)
+      SafeAuthentication.authenticate(safe, password)
+      !safe[key].nil?
+    end
+
+    private
+
+    def first_access(location)
+      !File.exists?(location) || ::IO.readlines(location).empty?
     end
   end
 end

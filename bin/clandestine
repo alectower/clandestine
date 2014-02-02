@@ -4,4 +4,4 @@ $: << File.expand_path(File.dirname(__FILE__) + "/../lib") unless $:.include? Fi
 
 require 'clandestine'
 
-Clandestine::Guard.new.on_the_job
+Clandestine::CommandLineRunner.run
