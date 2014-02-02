@@ -1,32 +1,44 @@
-# Clandestine
+Clandestine
+-----------
 
 Clandestine allows you to store passwords in a local file using AES-CBC-256 encryption.
 
-## Requirements
+Requirements
+------------
 
-Ruby
+Ruby > v2.0
 
 Currently only supported on OSX
 
-## Installation
+Installation
+------------
 
 Clandestine can be installed using RubyGems:
 
     $ gem install clandestine
 
-## Usage
+Usage
+-----
 
     user$ clandestine
+    Clandestine v0.1.0
+    Usage: clandestine [option] [key]
 
-    Options:           
-        -a <key>      ::   add password related to <key>
-        -g <key>      ::   get password related to <key>
-        -g            ::   get all keys
-        -d <key>      ::   delete password related to <key>
-        -d            ::   delete all passwords
-        -l            ::   print current location of safe
-        -l <path>     ::   move safe location to <path>
-        -c            ::   change password to safe
-        -r            ::   remove safe completely
-        
-        Passwords will be copied to the clipboard for 10 seconds
+        -a, --add <key>                  Add password for <key>
+        -g, --get [key]                  Get password for [key]. Returns all keys if one isn't given
+        -d, --delete <key>               Delete <key> and related password
+        -u, --update [key]               Update password for [key]. Updates password for safe if key isn't given
+        -l, --location                   Print location of safe. Default is ~/.cls if env variable CLANDESTINE_SAFE isn't set
+        -r, --remove                     Remove safe completely
+        -v, --version                    Print version number
+        -h, --help                       Print these options
+
+
+Contributing
+------------
+1. Fork it
+2. Create your feature branch (git checkout -b my-new-feature)
+3. Write specs (bundle exec rspec spec)
+4. Commit your changes (git commit -am 'Add some feature')
+5. Push to the branch (git push origin my-new-feature)
+6. Create new Pull Request
