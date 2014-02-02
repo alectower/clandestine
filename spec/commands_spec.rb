@@ -27,7 +27,7 @@ module Clandestine
 
     describe '.version' do
       it 'prints version' do
-        expect(Commands.version).to eq VERSION
+        Commands.version.should eq VERSION
       end
     end
 

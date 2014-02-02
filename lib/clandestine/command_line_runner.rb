@@ -9,11 +9,6 @@ module Clandestine
 
   class CommandLineRunner
 
-    def self.setup
-      safe_path = ENV['CLANDESTINE_SAFE']
-      safe_path = ENV['CLANDESTINE_SAFE'] = "#{ENV['HOME']}/.cls" unless safe_path
-    end
-
     def self.run
       clo = CommandLineOptions.new
       options = clo.parse

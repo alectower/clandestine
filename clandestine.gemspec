@@ -16,5 +16,6 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.add_dependency 'highline'
   gem.add_dependency 'json'
+  gem.add_dependency 'bcrypt-ruby'
   gem.add_development_dependency 'rspec', '~> 2'
 end
