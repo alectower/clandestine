@@ -6,7 +6,7 @@ Clandestine allows you to store passwords in a local file using AES-CBC-256 encr
 Requirements
 ------------
 
-Ruby > v2.0
+Ruby v2.0+
 
 Currently only supported on OSX
 
