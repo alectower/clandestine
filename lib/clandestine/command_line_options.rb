@@ -17,7 +17,7 @@ module Clandestine
         options[:add] = key
       end
 
-      parser.on('-g', '--get [key]', 'Get password for [key]. Returns all keys if one isn\'t given') do |key|
+      parser.on('-g', '--get [key]', 'Get password for [key] (Returns all keys if key isn\'t given)') do |key|
         options[:get] = key
       end
 
@@ -25,11 +25,11 @@ module Clandestine
         options[:delete] = key
       end
 
-      parser.on('-u', '--update [key]', 'Update password for [key]. Updates password for safe if key isn\'t given') do |key|
+      parser.on('-u', '--update [key]', 'Update password for [key] (Updates password for safe if key isn\'t given)') do |key|
         options[:update] = key
       end
 
-      parser.on '-l', '--location', 'Print location of safe. Default is ~/.cls if env variable CLANDESTINE_SAFE isn\'t set' do
+      parser.on '-l', '--location', 'Print location of safe (Default is ~/.cls if env variable CLANDESTINE_SAFE isn\'t set)' do
         options[:location] = nil
       end
 

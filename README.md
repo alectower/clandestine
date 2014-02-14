@@ -24,11 +24,11 @@ Usage
     Clandestine v0.1.0
     Usage: clandestine [option] [key]
 
-        -a, --add <key>                  Add password for <key>
-        -g, --get [key]                  Get password for [key]. Returns all keys if one isn't given
+        -a, --add <key>                  Add password for <key> (Passwords are randomly generated)
+        -g, --get [key]                  Get password for [key] (Returns all keys if key isn't given)
         -d, --delete <key>               Delete <key> and related password
-        -u, --update [key]               Update password for [key]. Updates password for safe if key isn't given
-        -l, --location                   Print location of safe. Default is ~/.cls if env variable CLANDESTINE_SAFE isn't set
+        -u, --update [key]               Update password for [key] (Updates password for safe if key isn't given)
+        -l, --location                   Print location of safe (Default is ~/.cls if env variable CLANDESTINE_SAFE isn't set)
         -r, --remove                     Remove safe completely
         -v, --version                    Print version number
         -h, --help                       Print these options
